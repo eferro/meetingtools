@@ -1,4 +1,9 @@
+var meetingtools = {};
 
-function dummy() {
-	return 2
-}
+(function(ns){
+	ns.dummy = function dummy() {
+		return 2
+	}
+
+}(meetingtools));
+

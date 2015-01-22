@@ -7,11 +7,7 @@ var meetingtools = {};
 	};
 
 	ns.createDailyMeeting = function (members, initialDuration, clock){
-		var members = members;
-		var initialDuration = initialDuration;
-		var initialTime;
-		var clock = clock;
-		var orderedMembers;
+		var initialTime, orderedMembers;
 
 		return {
 			startMeeting: function(){

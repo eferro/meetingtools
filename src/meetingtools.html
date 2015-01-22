@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Meetingtools</title>
+
+
+</head>
+
+<body>
+
+<div class="container"> 
+   <h1>Order</h1>
+    <div class="order"> 
+        <ul id="order-list">
+        </ul>
+    </div>
+    <div id="timer">
+    </div>
+   <button id="start-button">Start</button>
+</div>
+
+
+<script type="text/javascript" src="./meetingtools.js"></script>
+<script type="text/javascript">
+    (function() {
+        var members = ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]
+        var duration = 15*1
+        
+        var clock = {
+            getSeconds: function(){
+                return Math.floor((new Date).getTime()/1000);
+            }
+        }
+
+        var daily = meetingtools.createDailyMeeting(members, duration, clock);
+
+        var refreshTime = function(){
+            timer = document.getElementById("timer");
+            timer.innerHTML = daily.remainingTime();            
+        }
+
+        startButton = document.getElementById("start-button");
+        startButton.addEventListener("click", function(event){
+            daily.startMeeting();
+            
+            var orderList = document.getElementById("order-list");
+            var interventionOrder = daily.interventionOrder();
+            var arrayLength = interventionOrder.length;
+            for (var i = 0; i < arrayLength; i++) {
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(interventionOrder[i]));
+                orderList.appendChild(li);
+            }
+
+            refreshTime();
+            setInterval(refreshTime, 2000);
+        });
+    })();
+</script>
+</body>
+</html>

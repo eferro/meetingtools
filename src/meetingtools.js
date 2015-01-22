@@ -15,7 +15,6 @@ var meetingtools = {};
 
 		return {
 			startMeeting: function(){
-				//console.log(Math.floor((new Date).getTime()/1000));		
 				orderedMembers = shuffle(members);
 				initialTime = clock.getSeconds();
 			},

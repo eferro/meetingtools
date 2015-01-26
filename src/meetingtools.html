@@ -34,76 +34,76 @@
 
 <script type="text/javascript" src="./meetingtools.js"></script>
 <script type="text/javascript">
-    (function() {
+(function() {
 
-		var timer = {
-		    _addMinutes: function(date, minutes) {
-            	return new Date(date.getTime() + minutes*60000);
-        	},
-		    start: function(minutes){
-		        var endTime = this._addMinutes(new Date(), minutes);
-		        var self = this;
-		        setInterval(function(){
-  		        	var currentTime = new Date();
-  		        	if (currentTime > endTime){
-	  		            self.onFinish();
-  			        }
-  			        else {
-  		    	        self.onTick(currentTime);
-  		        	}
-		        }, 2000);
-		    },
-		    onTick: function(){/* event */}, // DOM LEVEL 0 TRADITIONAL
-		    onFinish: function(){/* event */}
-		};
-		
-		var timerView = {
-		    renderTime: function(theTime){
-		        timerWidget = document.getElementById("timer");
-                timerWidget.innerHTML = theTime;            
-		    }    
-		}
-		
-		var suffle = {
-		    random: function(participants){
-		          var o = participants;
-	  	        for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-		              return o;
-		    } 
-		};
-		
-		var participantsView = {
-		    renderParticipants: function(participants){
-		        var orderList = document.getElementById("order-list");
-	            var interventionOrder = participants;
-	            var arrayLength = interventionOrder.length;
-	            for (var i = 0; i < arrayLength; i++) {
-	                var li = document.createElement("li");
-	                li.appendChild(document.createTextNode(interventionOrder[i]));
-	                orderList.appendChild(li);
-	            }
-		    }
-		};
-		
-		var app = {
-		   init: function(){
-		      timer.onTick = function(currentTime){
-		          timerView.renderTime(currentTime);
-		      };
-		      timer.start(10);
-		      participantsView.renderParticipants(
-		        suffle.random( ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]));
-		   }
-		};
-		
-		startButton = document.getElementById("start-button");
-        startButton.addEventListener("click", function(event){
-        app.init();
-    });
+    var timer = {
+        _addMinutes: function(date, minutes) {
+            return new Date(date.getTime() + minutes*60000);
+        },
+        start: function(minutes){
+            var endTime = this._addMinutes(new Date(), minutes);
+            var self = this;
+            setInterval(function(){
+                var currentTime = new Date();
+                if (currentTime > endTime){
+                    self.onFinish();
+                } else {
+                    self.onTick(currentTime);
+                }
+            }, 2000);
+        },
+        onTick: function(){/* event */}, // DOM LEVEL 0 TRADITIONAL
+        onFinish: function(){/* event */}
+    };
+
+    var timerView = {
+        renderTime: function(theTime){
+            timerWidget = document.getElementById("timer");
+            timerWidget.innerHTML = theTime;            
+        }    
+    }
+
+    var suffle = {
+        random: function(participants){
+            var o = participants;
+            for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+        } 
+    };
+
+    var participantsView = {
+        renderParticipants: function(participants){
+            var orderList = document.getElementById("order-list");
+            var interventionOrder = participants;
+            var arrayLength = interventionOrder.length;
+            for (var i = 0; i < arrayLength; i++) {
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(interventionOrder[i]));
+                orderList.appendChild(li);
+            }
+        }
+    };
+
+    var app = {
+        init: function(){
+            timer.onTick = function(currentTime){
+                timerView.renderTime(currentTime);
+            };
     
-    window.timer = timer;
-    
-    })();
+            timer.start(10);
+            participantsView.renderParticipants(
+            suffle.random( ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]));
+        }
+    };
+
+    startButton = document.getElementById("start-button");
+    startButton.addEventListener("click", function(event){
+    app.init();
+});
+
+window.timer = timer;
+
+})();
 </script>
 </body>
 </html>

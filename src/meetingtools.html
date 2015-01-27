@@ -36,26 +36,7 @@
 <script type="text/javascript">
 (function() {
 
-    var timer = {
-        _addMinutes: function(date, minutes) {
-            return new Date(date.getTime() + minutes*60000);
-        },
-        start: function(minutes){
-            var endTime = this._addMinutes(new Date(), minutes);
-            var self = this;
-            setInterval(function(){
-                var currentTime = new Date();
-                if (currentTime > endTime){
-                    self.onFinish();
-                } else {
-                    self.onTick(currentTime);
-                }
-            }, 2000);
-        },
-        onTick: function(){/* event */}, // DOM LEVEL 0 TRADITIONAL
-        onFinish: function(){/* event */}
-    };
-
+    var timer = meetingtools.createTimer();
     var timerView = {
         renderTime: function(theTime){
             timerWidget = document.getElementById("timer");

@@ -6,20 +6,28 @@ var meetingtools = {};
 		return o;
 	}
 
-	ns.createTimer = function (){
+	ns.createTimer = function (minutes){
 		return {
+			_getSeconds: function(date){
+                return Math.floor(date.getTime()/1000);
+            },
 			_addMinutes: function(date, minutes) {
 				return new Date(date.getTime() + minutes*60000);
 			},
-			start: function(minutes){
+			start: function(){
 				var endTime = this._addMinutes(new Date(), minutes);
 				var self = this;
+
 				setInterval(function(){
 					var currentTime = new Date();
+
+					remainingTime = self._getSeconds(endTime)-self._getSeconds(currentTime)
+					console.log(remainingTime)
+
 					if (currentTime > endTime){
 						self.onFinish();
 					} else {
-						self.onTick(currentTime);
+						self.onTick(currentTime, remainingTime);
 					}
 				}, 2000);
 			},

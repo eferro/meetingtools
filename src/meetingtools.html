@@ -36,11 +36,10 @@
 <script type="text/javascript">
 (function() {
 
-    var timer = meetingtools.createTimer();
     var timerView = {
-        renderTime: function(theTime){
+        renderTime: function(theTime, remaindingTime){
             timerWidget = document.getElementById("timer");
-            timerWidget.innerHTML = theTime;            
+            timerWidget.innerHTML = theTime + " " + remaindingTime;            
         }    
     }
 
@@ -67,11 +66,12 @@
 
     var app = {
         init: function(){
-            timer.onTick = function(currentTime){
-                timerView.renderTime(currentTime);
+            timer = meetingtools.createTimer(10);
+            timer.onTick = function(currentTime, remaindingTime){
+                timerView.renderTime(currentTime, remaindingTime);
             };
     
-            timer.start(10);
+            timer.start();
             participantsView.renderParticipants(
             suffle.random( ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]));
         }

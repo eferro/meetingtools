@@ -27,5 +27,16 @@ describe("Meeting tools", function(){
         expect(daily.remainingTime()).toEqual(10*60-60);
     });
 
-});
+    it("when no time remaining, onFinish is fired", function(){
+        daily = meetingtools.createDailyMeeting([], 10, clock);
 
+        clock.getSeconds = function(){ return 0; };
+        daily.startMeeting();
+
+        clock.getSeconds = function(){ return 10; };
+        spyOn(daily, "onFinish");
+        daily.tick();
+        expect(daily.onFinish).toHaveBeenCalled();
+    });
+
+});

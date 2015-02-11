@@ -52,6 +52,12 @@ var meetingtools = {};
 				var consumedTime = actualTime - initialTime;
 				return initialDuration - consumedTime;
 			},
+			tick: function(){
+				if (this.remainingTime() <= 0) {
+					this.onFinish();
+				}
+			},
+			onFinish: function(){/* event */}
 		}
 	};
 

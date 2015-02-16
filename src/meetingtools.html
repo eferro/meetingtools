@@ -21,12 +21,13 @@
 </head>
 <body>
 <div class="container"> 
-   <h1>Order</h1>
+   <h3>Order</h3>
     <div class="order"> 
         <ul id="order-list">
         </ul>
     </div>
     <div id="timer">
+        <strong id="timer-minutes"></strong>:<strong id="timer-seconds"></strong>
     </div>
    <button id="start-button">Start</button>
 </div>
@@ -36,24 +37,14 @@
 <script type="text/javascript">
 (function() {
 
-    var timerView = {
-        renderTime: function(theTime, remaindingTime){
-            timerWidget = document.getElementById("timer");
-            timerWidget.innerHTML = theTime + " " + remaindingTime;            
-        }    
-    }
-
-    var suffle = {
-        random: function(participants){
-            var o = participants;
-            for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-            return o;
-        } 
-    };
-
-    var participantsView = {
+    var meetingView = {
         renderParticipants: function(participants){
             var orderList = document.getElementById("order-list");
+
+            while (orderList.firstChild) {
+                orderList.removeChild(orderList.firstChild);
+            }
+
             var interventionOrder = participants;
             var arrayLength = interventionOrder.length;
             for (var i = 0; i < arrayLength; i++) {
@@ -61,19 +52,37 @@
                 li.appendChild(document.createTextNode(interventionOrder[i]));
                 orderList.appendChild(li);
             }
+        },
+        renderTimer: function(time){
+            var minutes = Math.floor(time / 60);
+            var seconds = time - minutes * 60;
+            var minutesElement = document.getElementById("timer-minutes");
+            minutesElement.innerHTML = minutes;
+            var secondsElement = document.getElementById("timer-seconds");
+            secondsElement.innerHTML = new String("00" + seconds).slice(-2);
         }
     };
 
     var app = {
         init: function(){
-            timer = meetingtools.createTimer(10);
-            timer.onTick = function(currentTime, remaindingTime){
-                timerView.renderTime(currentTime, remaindingTime);
-            };
-    
-            timer.start();
-            participantsView.renderParticipants(
-            suffle.random( ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]));
+            participants = ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]
+            initialDuration = 1*10
+            meeting = meetingtools.createMeeting(participants, initialDuration, meetingtools.createClock());
+            meeting.startMeeting()
+
+            meetingView.renderParticipants(meeting.interventionOrder())
+            meetingView.renderTimer(meeting.remainingTime());
+
+
+            ticker = window.setInterval(function(){
+                meeting.tick();
+                meetingView.renderTimer(meeting.remainingTime());
+            }, 1000);
+
+            meeting.onFinish = function(){
+                alert("Game Over!!!");
+                window.clearInterval(ticker);
+            }
         }
     };
 

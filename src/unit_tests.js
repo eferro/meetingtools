@@ -7,18 +7,18 @@ describe("Meeting tools", function(){
     };
 
     it("calculates intervention order for the daily", function(){
-        daily = meetingtools.createDailyMeeting(["user1", "user2", "user3"], 10*60, clock);
+        daily = meetingtools.createMeeting(["user1", "user2", "user3"], 10*60, clock);
         daily.startMeeting();
         expect(daily.interventionOrder().length).toEqual(3);      
     });
     it("initialy all time remaining", function(){
-        daily = meetingtools.createDailyMeeting(["user1", "user2", "user3"], 10*60, clock);
+        daily = meetingtools.createMeeting(["user1", "user2", "user3"], 10*60, clock);
         daily.startMeeting();
         expect(daily.remainingTime()).toEqual(10*60);
     });
 
     it("when 10 second passes the remainingTime is 9*60", function(){        
-        daily = meetingtools.createDailyMeeting(["user1", "user2", "user3"], 10*60, clock);
+        daily = meetingtools.createMeeting(["user1", "user2", "user3"], 10*60, clock);
         daily.startMeeting();
 
         clock.getSeconds = function(){
@@ -28,7 +28,7 @@ describe("Meeting tools", function(){
     });
 
     it("when no time remaining, onFinish is fired", function(){
-        daily = meetingtools.createDailyMeeting([], 10, clock);
+        daily = meetingtools.createMeeting([], 10, clock);
 
         clock.getSeconds = function(){ return 0; };
         daily.startMeeting();
@@ -38,5 +38,5 @@ describe("Meeting tools", function(){
         daily.tick();
         expect(daily.onFinish).toHaveBeenCalled();
     });
-
+    
 });

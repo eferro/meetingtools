@@ -22,6 +22,8 @@
 <body>
 <div class="container"> 
    <h3>Order</h3>
+    <input name="participant" type="text" maxlength="50" id="participantTxt"/>
+    <button id="add-participant">Add Participant</button>
     <div class="order"> 
         <ul id="order-list">
         </ul>
@@ -63,23 +65,16 @@
         }
     };
 
+    var repository = meetingtools.createParticipantsRepository()
     var app = {
         init: function(){
-            participants = ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]
             initialDuration = 15*60
-	    repository = meetingtools.createParticipantsRepository()
 
-	    var participantsLength = participants.length;
-	    for (var i = 0; i < participantsLength; i++) {
-	        repository.add(participants[i]);
-	    }
-	    
             meeting = meetingtools.createMeeting(repository, initialDuration, meetingtools.createClock());
             meeting.startMeeting()
 
             meetingView.renderParticipants(meeting.interventionOrder())
             meetingView.renderTimer(meeting.remainingTime());
-
 
             ticker = window.setInterval(function(){
                 meeting.tick();
@@ -93,6 +88,16 @@
         }
     };
 
+	
+    participantTxt = document.getElementById("participantTxt");
+    addParticipantButton = document.getElementById("add-participant");
+    addParticipantButton.addEventListener("click", function(event){
+	value = participantTxt.value.trim();
+	if (value != "") {
+	    repository.add(value);
+	    participantTxt.value = "";
+	}
+    });
     startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function(event){
     app.init();

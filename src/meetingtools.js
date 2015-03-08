@@ -5,13 +5,23 @@ var meetingtools = {};
 		for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 		return o;
 	}
-
-	ns.createMeeting = function (members, initialDuration, clock){
+        ns.createParticipantsRepository = function () {
+	    var participants = [];
+	    return {
+		add: function(participant) {
+		    participants.push(participant);
+		},
+		findAll: function() {
+		    return participants
+		}
+	    }
+        };
+	ns.createMeeting = function (repository, initialDuration, clock){
 		var initialTime, orderedMembers;
 
 		return {
 			startMeeting: function(){
-				orderedMembers = shuffle(members);
+				orderedMembers = shuffle(repository.findAll());
 				initialTime = clock.getSeconds();
 			},
 			interventionOrder: function(){

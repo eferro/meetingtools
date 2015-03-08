@@ -66,8 +66,15 @@
     var app = {
         init: function(){
             participants = ["jgil", "regiluz", "am", "acruz", "apa", "eferro", "nestor"]
-            initialDuration = 1*10
-            meeting = meetingtools.createMeeting(participants, initialDuration, meetingtools.createClock());
+            initialDuration = 15*60
+	    repository = meetingtools.createParticipantsRepository()
+
+	    var participantsLength = participants.length;
+	    for (var i = 0; i < participantsLength; i++) {
+	        repository.add(participants[i]);
+	    }
+	    
+            meeting = meetingtools.createMeeting(repository, initialDuration, meetingtools.createClock());
             meeting.startMeeting()
 
             meetingView.renderParticipants(meeting.interventionOrder())

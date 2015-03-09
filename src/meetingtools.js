@@ -6,13 +6,17 @@ var meetingtools = {};
 		return o;
 	}
         ns.createParticipantsRepository = function () {
-	    var participants = [];
 	    return {
 		add: function(participant) {
+		    var participants =  JSON.parse(window.localStorage.getItem("participants"));
+		    if (participants == null) {
+			participants = [];
+		    }
 		    participants.push(participant);
+		    window.localStorage.setItem("participants", JSON.stringify(participants));
 		},
 		findAll: function() {
-		    return participants
+		    return JSON.parse(window.localStorage.getItem("participants"));
 		}
 	    }
         };

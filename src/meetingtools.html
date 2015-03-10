@@ -66,42 +66,42 @@
     };
 
     var repository = meetingtools.createParticipantsRepository()
-    var app = {
-        init: function(){
-            initialDuration = 15*60
+    var meeting = meetingtools.createMeeting(repository, 15*60, meetingtools.createClock());
 
-            meeting = meetingtools.createMeeting(repository, initialDuration, meetingtools.createClock());
-            meeting.startMeeting()
-
-            meetingView.renderParticipants(meeting.interventionOrder())
+    var init = function(){
+        ticker = window.setInterval(function(){
+            meeting.tick();
             meetingView.renderTimer(meeting.remainingTime());
+        }, 1000);
 
-            ticker = window.setInterval(function(){
-                meeting.tick();
-                meetingView.renderTimer(meeting.remainingTime());
-            }, 1000);
-
-            meeting.onFinish = function(){
-                alert("Game Over!!!");
-                window.clearInterval(ticker);
-            }
+        meeting.onFinish = function(){
+            alert("Game Over!!!");
+            window.clearInterval(ticker);
         }
     };
 
-	
+    
     participantTxt = document.getElementById("participantTxt");
     addParticipantButton = document.getElementById("add-participant");
     addParticipantButton.addEventListener("click", function(event){
-	value = participantTxt.value.trim();
-	if (value != "") {
-	    repository.add(value);
-	    participantTxt.value = "";
-	}
+            value = participantTxt.value.trim();
+            if (value != "") {
+            meeting.add(value);
+            participantTxt.value = "";
+            }
     });
+
+    meetingView.renderParticipants(meeting.interventionOrder())
+    meetingView.renderTimer(meeting.remainingTime());
+
     startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function(event){
-    app.init();
-});
+        console.log("VAMOS a EMPEZAR" + meeting);
+        meeting.startMeeting()
+        console.log("ya hemos dado al start meeting" + meeting);
+        init();
+        console.log("hemos hecho el init");
+    });
 
 window.timer = timer;
 

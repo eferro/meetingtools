@@ -21,9 +21,13 @@
 </head>
 <body>
 <div class="container"> 
-   <h3>Order</h3>
     <input name="participant" type="text" maxlength="50" id="participantTxt"/>
     <button id="add-participant">Add Participant</button>
+    <hr>
+    <div>
+        <p id="participants"></p>
+    </div>
+    <hr>
     <div class="order"> 
         <ul id="order-list">
         </ul>
@@ -40,14 +44,25 @@
 (function() {
 
     var meetingView = {
-        renderParticipants: function(participants){
+        renderParticipants: function(meeting){
+            var participantsText = document.getElementById("participants");
+            participantsString = "";
+
+            participants = meeting.participants();
+            var arrayLength = participants.length;
+            for (var i = 0; i < arrayLength; i++) {
+                participantsString = participantsString + " " + participants[i];
+            }
+            participantsText.innerHTML = participantsString
+            
+
             var orderList = document.getElementById("order-list");
 
             while (orderList.firstChild) {
                 orderList.removeChild(orderList.firstChild);
             }
 
-            var interventionOrder = participants;
+            var interventionOrder = meeting.interventionOrder();
             var arrayLength = interventionOrder.length;
             for (var i = 0; i < arrayLength; i++) {
                 var li = document.createElement("li");
@@ -79,7 +94,6 @@
             window.clearInterval(ticker);
         }
     };
-
     
     participantTxt = document.getElementById("participantTxt");
     addParticipantButton = document.getElementById("add-participant");
@@ -91,16 +105,14 @@
             }
     });
 
-    meetingView.renderParticipants(meeting.interventionOrder())
+    meetingView.renderParticipants(meeting)
     meetingView.renderTimer(meeting.remainingTime());
 
     startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function(event){
-        console.log("VAMOS a EMPEZAR" + meeting);
         meeting.startMeeting()
-        console.log("ya hemos dado al start meeting" + meeting);
+        meetingView.renderParticipants(meeting)
         init();
-        console.log("hemos hecho el init");
     });
 
 window.timer = timer;

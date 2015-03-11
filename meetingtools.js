@@ -30,6 +30,9 @@ var meetingtools = {};
             add: function(participant){
                 repository.add(participant)
             },
+            participants: function(){
+                return repository.findAll();
+            },
             interventionOrder: function(){
                 return shuffle(repository.findAll());
             },

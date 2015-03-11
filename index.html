@@ -1,1 +1,111 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meetingtools</title>
+    <link href="{{ static_url('favicon.ico') }}" rel="icon" type="image/x-icon" />
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{{static_url('css/application.css')}}"> -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container"> 
+   <h3>Order</h3>
+    <input name="participant" type="text" maxlength="50" id="participantTxt"/>
+    <button id="add-participant">Add Participant</button>
+    <div class="order"> 
+        <ul id="order-list">
+        </ul>
+    </div>
+    <div id="timer">
+        <strong id="timer-minutes"></strong>:<strong id="timer-seconds"></strong>
+    </div>
+   <button id="start-button">Start</button>
+</div>
+
+
+<script type="text/javascript" src="./meetingtools.js"></script>
+<script type="text/javascript">
+(function() {
+
+    var meetingView = {
+        renderParticipants: function(participants){
+            var orderList = document.getElementById("order-list");
+
+            while (orderList.firstChild) {
+                orderList.removeChild(orderList.firstChild);
+            }
+
+            var interventionOrder = participants;
+            var arrayLength = interventionOrder.length;
+            for (var i = 0; i < arrayLength; i++) {
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(interventionOrder[i]));
+                orderList.appendChild(li);
+            }
+        },
+        renderTimer: function(time){
+            var minutes = Math.floor(time / 60);
+            var seconds = time - minutes * 60;
+            var minutesElement = document.getElementById("timer-minutes");
+            minutesElement.innerHTML = minutes;
+            var secondsElement = document.getElementById("timer-seconds");
+            secondsElement.innerHTML = new String("00" + seconds).slice(-2);
+        }
+    };
+
+    var repository = meetingtools.createParticipantsRepository()
+    var meeting = meetingtools.createMeeting(repository, 15*60, meetingtools.createClock());
+
+    var init = function(){
+        ticker = window.setInterval(function(){
+            meeting.tick();
+            meetingView.renderTimer(meeting.remainingTime());
+        }, 1000);
+
+        meeting.onFinish = function(){
+            alert("Game Over!!!");
+            window.clearInterval(ticker);
+        }
+    };
+
+    
+    participantTxt = document.getElementById("participantTxt");
+    addParticipantButton = document.getElementById("add-participant");
+    addParticipantButton.addEventListener("click", function(event){
+            value = participantTxt.value.trim();
+            if (value != "") {
+            meeting.add(value);
+            participantTxt.value = "";
+            }
+    });
+
+    meetingView.renderParticipants(meeting.interventionOrder())
+    meetingView.renderTimer(meeting.remainingTime());
+
+    startButton = document.getElementById("start-button");
+    startButton.addEventListener("click", function(event){
+        console.log("VAMOS a EMPEZAR" + meeting);
+        meeting.startMeeting()
+        console.log("ya hemos dado al start meeting" + meeting);
+        init();
+        console.log("hemos hecho el init");
+    });
+
+window.timer = timer;
+
+})();
+</script>
+</body>
+</html>

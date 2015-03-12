@@ -35,6 +35,7 @@
     <div id="timer">
         <strong id="timer-minutes"></strong>:<strong id="timer-seconds"></strong>
     </div>
+   <input name="initialMinutes" type="text" maxlength="2" id="initialMinutesTxt"  value="15"/> 
    <button id="start-button">Start</button>
 </div>
 
@@ -95,7 +96,7 @@
         }
     };
     
-    participantTxt = document.getElementById("participantTxt");
+    var participantTxt = document.getElementById("participantTxt");
     addParticipantButton = document.getElementById("add-participant");
     addParticipantButton.addEventListener("click", function(event){
             value = participantTxt.value.trim();
@@ -110,7 +111,9 @@
 
     startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function(event){
-        meeting.startMeeting(15*60);
+        var initialMinutes = parseInt(document.getElementById("initialMinutesTxt").value);
+
+        meeting.startMeeting(initialMinutes*60);
         meetingView.renderParticipants(meeting);
         meetingView.renderTimer(meeting.remainingTime());
         init();

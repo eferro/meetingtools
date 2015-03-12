@@ -81,7 +81,7 @@
     };
 
     var repository = meetingtools.createParticipantsRepository()
-    var meeting = meetingtools.createMeeting(repository, 15*60, meetingtools.createClock());
+    var meeting = meetingtools.createMeeting(repository, meetingtools.createClock());
 
     var init = function(){
         ticker = window.setInterval(function(){
@@ -110,8 +110,8 @@
 
     startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function(event){
-        meeting.startMeeting()
-        meetingView.renderParticipants(meeting)
+        meeting.startMeeting(15*60);
+        meetingView.renderParticipants(meeting);
         init();
     });
 

@@ -20,14 +20,16 @@ var meetingtools = {};
             }
         }
     };
-    ns.createMeeting = function (repository, initialDuration, clock){
+    ns.createMeeting = function (repository, clock){
         var initialTime = 0;
         var started = false;
+        var initialDuration = 0;
 
         return {
-            startMeeting: function(){
+            startMeeting: function(duration){
                 initialTime = clock.getSeconds();
                 started = true;
+                initialDuration = duration;
             },
             add: function(participant){
                 repository.add(participant)

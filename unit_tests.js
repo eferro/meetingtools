@@ -13,22 +13,22 @@ describe("Meeting tools", function(){
     }
 
     it("calculates intervention order for the daily", function(){
-        daily = meetingtools.createMeeting(repository, 10*60, clock);
-        daily.startMeeting();
+        daily = meetingtools.createMeeting(repository, clock);
+        daily.startMeeting(10*60);
         expect(daily.interventionOrder().length).toEqual(3);      
     });
     it("initialy all time remaining", function(){
-        daily = meetingtools.createMeeting(repository, 10*60, clock);
-        daily.startMeeting();
+        daily = meetingtools.createMeeting(repository, clock);
+        daily.startMeeting(10*60);
         expect(daily.remainingTime()).toEqual(10*60);
     });
 
     it("when 10 second passes the remainingTime is 9*60", function(){        
-        daily = meetingtools.createMeeting(repository, 10*60, clock);
+        daily = meetingtools.createMeeting(repository, clock);
         clock.getSeconds = function(){
             return 0;
         };
-        daily.startMeeting();
+        daily.startMeeting(10*60);
 
         clock.getSeconds = function(){
             return 60;
@@ -38,10 +38,10 @@ describe("Meeting tools", function(){
     });
 
     it("when no time remaining, onFinish is fired", function(){
-        daily = meetingtools.createMeeting([], 10, clock);
+        daily = meetingtools.createMeeting([], clock);
 
         clock.getSeconds = function(){ return 0; };
-        daily.startMeeting();
+        daily.startMeeting(10);
 
         clock.getSeconds = function(){ return 10; };
         spyOn(daily, "onFinish");

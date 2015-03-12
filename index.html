@@ -97,16 +97,27 @@
     };
     
     var participantTxt = document.getElementById("participantTxt");
+    participantTxt.addEventListener("keyup", function(event){
+        if (event.keyCode == 13){
+            var value = participantTxt.value.trim();
+            if (value != "") {
+                meeting.add(value);
+                participantTxt.value = "";
+            }
+            meetingView.renderParticipants(meeting);
+        }
+    });
     addParticipantButton = document.getElementById("add-participant");
     addParticipantButton.addEventListener("click", function(event){
-            value = participantTxt.value.trim();
+            var value = participantTxt.value.trim();
             if (value != "") {
-            meeting.add(value);
-            participantTxt.value = "";
+                meeting.add(value);
+                participantTxt.value = "";
             }
+            meetingView.renderParticipants(meeting);
     });
 
-    meetingView.renderParticipants(meeting)
+    meetingView.renderParticipants(meeting);
     meetingView.renderTimer(meeting.remainingTime());
 
     startButton = document.getElementById("start-button");

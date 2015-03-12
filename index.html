@@ -112,6 +112,7 @@
     startButton.addEventListener("click", function(event){
         meeting.startMeeting(15*60);
         meetingView.renderParticipants(meeting);
+        meetingView.renderTimer(meeting.remainingTime());
         init();
     });
 

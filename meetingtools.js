@@ -22,10 +22,12 @@ var meetingtools = {};
     };
     ns.createMeeting = function (repository, initialDuration, clock){
         var initialTime = 0;
+        var started = false;
 
         return {
             startMeeting: function(){
                 initialTime = clock.getSeconds();
+                started = true;
             },
             add: function(participant){
                 repository.add(participant)
@@ -37,7 +39,7 @@ var meetingtools = {};
                 return shuffle(repository.findAll());
             },
             remainingTime: function(){
-                if (initialTime == 0){
+                if (started == false){
                     return initialDuration;
                 }
                 var actualTime = clock.getSeconds();

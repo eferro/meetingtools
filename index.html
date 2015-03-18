@@ -28,10 +28,6 @@
         <p id="participants"></p>
     </div>
     <hr>
-    <div class="order"> 
-        <ul id="order-list">
-        </ul>
-    </div>
     <div id="timer">
         <strong id="timer-minutes"></strong>:<strong id="timer-seconds"></strong>
     </div>
@@ -49,27 +45,12 @@
             var participantsText = document.getElementById("participants");
             participantsString = "";
 
-            participants = meeting.participants();
+            participants = meeting.interventionOrder();
             var arrayLength = participants.length;
             for (var i = 0; i < arrayLength; i++) {
                 participantsString = participantsString + " " + participants[i];
             }
             participantsText.innerHTML = participantsString
-            
-
-            var orderList = document.getElementById("order-list");
-
-            while (orderList.firstChild) {
-                orderList.removeChild(orderList.firstChild);
-            }
-
-            var interventionOrder = meeting.interventionOrder();
-            var arrayLength = interventionOrder.length;
-            for (var i = 0; i < arrayLength; i++) {
-                var li = document.createElement("li");
-                li.appendChild(document.createTextNode(interventionOrder[i]));
-                orderList.appendChild(li);
-            }
         },
         renderTimer: function(time){
             var minutes = Math.floor(time / 60);

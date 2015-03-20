@@ -41,6 +41,11 @@
 <script type="text/javascript">
 (function() {
 
+    function getAngle(ctx, x, y, angle, h) {
+        var radians = angle * (Math.PI / 180);
+        return { x: x + h * Math.cos(radians), y: y + h * Math.sin(radians) };
+    }
+
     var meetingView = {
         renderParticipants: function(meeting){
             var participantsText = document.getElementById("participants");
@@ -79,6 +84,16 @@
             context.lineWidth = 15;
             context.strokeStyle = 'red';
             context.stroke();
+
+            context.beginPath();
+            context.moveTo(centerX, centerY)
+            context.lineWidth = 2;
+            context.strokeStyle = 'blue';
+            pos = getAngle(context, centerX, centerY, 0, radius)
+            context.lineTo(pos.x, pos.y);
+            context.stroke();
+            console.log("EFA2");
+
 
         }
     };

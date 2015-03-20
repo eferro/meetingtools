@@ -30,6 +30,7 @@
     <hr>
     <div id="timer">
         <strong id="timer-minutes"></strong>:<strong id="timer-seconds"></strong>
+        <canvas id="timer-canvas" width="200" height="200"></canvas>
     </div>
    <input name="initialMinutes" type="text" maxlength="2" id="initialMinutesTxt"  value="15"/> 
    <button id="start-button">Start</button>
@@ -59,6 +60,26 @@
             minutesElement.innerHTML = minutes;
             var secondsElement = document.getElementById("timer-seconds");
             secondsElement.innerHTML = new String("00" + seconds).slice(-2);
+
+            var canvas = document.getElementById('timer-canvas');
+            var context = canvas.getContext('2d');
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+
+            var radius = 70;
+
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fillStyle = 'green';
+            context.fill();
+            context.stroke();
+
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.7 * Math.PI, false);
+            context.lineWidth = 15;
+            context.strokeStyle = 'red';
+            context.stroke();
+
         }
     };
 

@@ -46,6 +46,14 @@
         return { x: x + h * Math.cos(radians), y: y + h * Math.sin(radians) };
     }
 
+    Math.degrees = function(rad){
+        return rad*(180/Math.PI);
+    }
+
+    Math.radians = function(deg){
+        return deg * (Math.PI/180);
+    }
+
     var meetingView = {
         renderParticipants: function(meeting){
             var participantsText = document.getElementById("participants");
@@ -75,26 +83,22 @@
 
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-            context.fillStyle = 'green';
-            context.fill();
-            context.stroke();
-
-            context.beginPath();
-            context.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.7 * Math.PI, false);
-            context.lineWidth = 15;
+            context.lineWidth = 4;
             context.strokeStyle = 'red';
             context.stroke();
 
+            var totalSeconds = minutes * 60 + seconds;
+            var degrees = totalSeconds / 10;
+
             context.beginPath();
-            context.moveTo(centerX, centerY)
-            context.lineWidth = 2;
-            context.strokeStyle = 'blue';
-            pos = getAngle(context, centerX, centerY, 0, radius)
+            context.moveTo(centerX, centerY);
+            pos = getAngle(context, centerX, centerY, -90, radius);
             context.lineTo(pos.x, pos.y);
+            context.arc(centerX, centerY, radius, Math.radians(-90), Math.radians(-90 + degrees), false);
+            context.closePath();
+            context.lineWidth = 4;
+            context.strokeStyle = 'blue';
             context.stroke();
-            console.log("EFA2");
-
-
         }
     };
 
